@@ -21,6 +21,8 @@ class Location {
 
   ~Location() { }
 
+  // TODO: conditional seems unnecessary after changes to 
+  // get_next_location, so test without
   void inc(const int y) {
     if (y) {
         this->y = (y < COORD_MAX) ? this->y + 1 : this->y;
@@ -42,6 +44,8 @@ class Location {
     return *(arr + index);
   }
 
+  // TODO: optimize this code. Hesistant to use vector.h but
+  // may be best if memory allows
   void get_next_location() {
 
     int pick;
