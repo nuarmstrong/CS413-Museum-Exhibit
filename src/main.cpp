@@ -5,6 +5,8 @@
 #define NUM_LEDS 256
 #define DATA_PIN 3
 #define PRINT_ENABLED false
+
+// TODO: migrate to Note.h
 enum button {
   buttonRed,
   buttonOrange,
@@ -15,14 +17,19 @@ enum button {
 };
 const int buttons[6] = {12, 11, 10, 6, 5, 4};
 
+// TODO: probably end up as member of Keyboard class
+// and referenced as pointer by Note objects
 CRGB leds[NUM_LEDS];
+
+//TODO: make member fields of Note class
 bool writtenRed[256];
 bool writtenOrange[256];
 bool writtenYellow[256];
 bool writtenGreen[256];
 bool writtenBlue[256];
 bool writtenPurple[256];
-
+// TODO: init in Note constructor, change to 
+// random start coord
 Location red = Location(3, 3);
 Location orange = Location(12, 3);
 Location yellow = Location(3, 7);
@@ -40,18 +47,17 @@ void myprint(String s, int x = 0) {
 
 }
 
+// TODO: migrate as method of Note class
 void light(Location loc, CRGB color, bool d = true) {
 
   uint16_t index = loc.get_index();
-  // CRGB new_color = static_cast<CRGB>(color + leds[color]);
-  // myprint("Summing ", new_color);
-  // myprint("to ", leds[index]);
   leds[index] += color;
   FastLED.show();
   if (d) delay(50);
 
 }
 
+// Redundant from location.h, needed for debugging
 uint16_t get_index(uint8_t x, uint8_t y) {
 
     if (x & 0x01) {
@@ -67,7 +73,9 @@ void setup() {
 
   randomSeed(analogRead(0));
   Serial.begin(9600);
-  pinMode(12, INPUT);
+
+  // TODO: migrate to Note.h constructor
+  pinMode(12, INPUT); 
   pinMode(11, INPUT);
   pinMode(10, INPUT);
   pinMode(6, INPUT);
@@ -85,6 +93,8 @@ void setup() {
 }
 
 void draw_line(Location start, CRGB color) {
+  // This is the same logic running in loop(), 
+  // but non-functional when called directly?
 
   int old_index = start.get_index();
   writtenRed[old_index] = 1;
@@ -105,20 +115,17 @@ void draw_line(Location start, CRGB color) {
 
 }
 
-int i = 0;
-
 void loop() { 
 
-  // if(digitalRead(buttons[buttonRed]) == HIGH) {
-  //   Serial.print("on");
-  // }
+  // This is the problem: only two of these can run at 
+  // a time. Uncommenting another breaks the program
 
   if(digitalRead(buttons[buttonRed]) == HIGH) {
     int old_index = red.get_index();
     writtenRed[old_index] = 1;
     myprint("Lighting location Red: ", old_index);
     // delay(500);
-    light(red, CRGB::Green);
+    light(red, CRGB::Red);
 
     while(writtenRed[red.get_index()]) {
       red.get_next_location();
@@ -137,7 +144,7 @@ void loop() {
   //   writtenOrange[old_index] = 1;
   //   myprint("Lighting location Orange: ", old_index);
   //   // delay(500);
-  //   light(orange, 0xA5FF00);
+  //   light(orange, 0x8CFF00);
 
   //   while(writtenOrange[orange.get_index()]) {
   //     orange.get_next_location();
@@ -151,12 +158,31 @@ void loop() {
   //   }
   // }
 
+  if(digitalRead(buttons[buttonYellow]) == HIGH) {
+    int old_index = yellow.get_index();
+    writtenYellow[old_index] = 1;
+    myprint("Lighting location Yellow: ", old_index);
+    // delay(500);
+    light(yellow, CRGB::Yellow);
+
+    while(writtenYellow[yellow.get_index()]) {
+      yellow.get_next_location();
+      int new_index = yellow.get_index();
+      myprint("trying new index: ", new_index);
+      // delay(200);
+      if (writtenYellow[new_index]) { 
+        myprint("Summing to ", old_index);
+        // leds[new_index] += leds[old_index];
+      }
+    }
+  }
+
   // if(digitalRead(buttons[buttonGreen]) == HIGH) {
   //   int old_index = green.get_index();
   //   writtenGreen[old_index] = 1;
   //   myprint("Lighting location: ", old_index);
   //   // delay(500);
-  //   light(green, CRGB::Red);
+  //   light(green, CRGB::Green);
 
   //   while(writtenGreen[green.get_index()]) {
   //     green.get_next_location();
@@ -170,31 +196,31 @@ void loop() {
   //   }
   // }
 
-  if(digitalRead(buttons[buttonBlue]) == HIGH) {
-    int old_index = blue.get_index();
-    writtenBlue[old_index] = 1;
-    myprint("Lighting location Blue: ", old_index);
-    // delay(500);
-    light(blue, CRGB::Blue);
+  // if(digitalRead(buttons[buttonBlue]) == HIGH) {
+  //   int old_index = blue.get_index();
+  //   writtenBlue[old_index] = 1;
+  //   myprint("Lighting location Blue: ", old_index);
+  //   // delay(500);
+  //   light(blue, CRGB::Blue);
 
-    while(writtenBlue[blue.get_index()]) {
-      blue.get_next_location();
-      int new_index = blue.get_index();
-      myprint("trying new index: ", new_index);
-      // delay(200);
-      if (writtenBlue[new_index]) { 
-        myprint("Summing to ", old_index);
-        // leds[new_index] += leds[old_index];
-      }
-    }
-  }
+  //   while(writtenBlue[blue.get_index()]) {
+  //     blue.get_next_location();
+  //     int new_index = blue.get_index();
+  //     myprint("trying new index: ", new_index);
+  //     // delay(200);
+  //     if (writtenBlue[new_index]) { 
+  //       myprint("Summing to ", old_index);
+  //       // leds[new_index] += leds[old_index];
+  //     }
+  //   }
+  // }
 
   // if(digitalRead(buttons[buttonPurple]) == HIGH) {
   //   int old_index = purple.get_index();
   //   writtenPurple[old_index] = 1;
   //   myprint("Lighting location: ", old_index);
   //   // delay(500);
-  //   light(purple, 0x00FFFF);
+  //   light(purple, CRGB::Purple);
 
   //   while(writtenPurple[purple.get_index()]) {
   //     purple.get_next_location();
