@@ -85,46 +85,45 @@ class Location {
       }
 
 
-  switch (pick) 
-  {
-  case 1:
-      // x, y-  
-      this->dec(Location::Y);
-      break;
-  case 2:
-      // x, y+
-      this->inc(Location::Y);
-      break;
-  case 3:
-      // x+, y0
-      this->inc(Location::X);
-      break;
-  case 4:
-      // x-, y0
-      this->dec(Location::X);
-      
-      break;
-  case 5:
-      // x-, y+
-      this->dec(Location::X);
-      this->inc(Location::Y);
-      break;
-  case 6:
-      // x-, y-
-      this->dec(Location::X);
-      this->dec(Location::Y);
-      break;
-  case 7:
-    // x+, y-
-      this->inc(Location::X);
-      this->dec(Location::Y);
-      break;
-  default:
-      // // x+, y+
-      this->inc(Location::X);
-      this->inc(Location::Y);
-      break;
-  }
+  switch (pick) {
+    case 1:
+        // x, y-  
+        this->dec(Location::Y);
+        break;
+    case 2:
+        // x, y+
+        this->inc(Location::Y);
+        break;
+    case 3:
+        // x+, y0
+        this->inc(Location::X);
+        break;
+    case 4:
+        // x-, y0
+        this->dec(Location::X);
+        
+        break;
+    case 5:
+        // x-, y+
+        this->dec(Location::X);
+        this->inc(Location::Y);
+        break;
+    case 6:
+        // x-, y-
+        this->dec(Location::X);
+        this->dec(Location::Y);
+        break;
+    case 7:
+        // x+, y-
+        this->inc(Location::X);
+        this->dec(Location::Y);
+        break;
+    default:
+        // x+, y+
+        this->inc(Location::X);
+        this->inc(Location::Y);
+        break;
+    }
   }
 
   uint16_t get_index() {
