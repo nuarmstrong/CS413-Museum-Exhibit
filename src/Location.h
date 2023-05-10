@@ -15,10 +15,9 @@ class Location {
     static const int X = 0;
     static const int Y = 1;
 
-  Location(uint8_t x, uint8_t y) {
-    this->x = x;
-    this->y = y;
-  }
+  Location() : Location(random() % 16, random() % 16) { }
+
+  Location(uint8_t x, uint8_t y) : x(x), y(y) { }
 
   ~Location() { }
 
