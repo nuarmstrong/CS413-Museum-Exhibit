@@ -50,8 +50,6 @@ void loop() {
       Serial.print("SKIPPING ");
       Serial.println(start.get_index());
     }
-
-    // written[start.get_index()] = true;
   }
   delay(5000);
   FastLED.clear();
