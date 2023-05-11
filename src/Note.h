@@ -19,26 +19,24 @@ const int buttons[6] = {12, 11, 10, 6, 5, 4};
 class Note {
     private:
         Location* loc;
-        bool written[256] = {};
-        String fpath;
+        String fname;
         uint8_t pin;
         button b;
-        unsigned int color;
+        CRGB color;
         unsigned int* leds;
-        CRGB leds[NUM_LEDS] = {};
 
 
     public:
 
-        Note(Location* loc, String fpath, uint8_t pin, button b, unsigned int color) {
+        Note(Location* loc, String fname, uint8_t pin_num, button b, CRGB color) {
 
             this->loc = loc;
-            this->fpath = fpath;
-            this->pin = pin;
+            this->fname = fname;
+            this->pin = pin_num;
             pinMode(pin, INPUT);
             this->b = b;
             this->color = color;
-
+// 
          }
 
         ~Note() { };
