@@ -7,59 +7,48 @@
 #define NUM_LEDS 256
 
 enum button {
-  buttonRed,
-  buttonOrange,
-  buttonYellow,
-  buttonGreen,
-  buttonBlue,
-  buttonPurple,
+  buttonRed = 12,
+  buttonOrange = 11,
+  buttonYellow = 10,
+  buttonGreen = 6,
+  buttonBlue = 5,
+  buttonPurple = 4,
 };
-const int buttons[6] = {12, 11, 10, 6, 5, 4};
 
 class Note {
     private:
         Location* loc;
-        String fname;
+        // const char path;
         uint8_t pin;
-        button b;
+        bool written[256] = {false};
         CRGB color;
-        unsigned int* leds;
-
+        CRGB (*leds)[256];  // pointer to an array of 256 CRGB
 
     public:
 
-        Note(Location* loc, String fname, uint8_t pin_num, button b, CRGB color) {
-
-            this->loc = loc;
-            this->fname = fname;
-            this->pin = pin_num;
-            pinMode(pin, INPUT);
-            this->b = b;
-            this->color = color;
-// 
-         }
+        Note(button pin_num, CRGB color, CRGB (*leds)[256])
+        : pin(pin_num), color(color), leds(leds) 
+        {
+            this->loc = new Location(random(COORD_MIN), random(COORD_MAX));
+            pinMode(pin_num, INPUT);
+        }
 
         ~Note() { };
 
-        bool pushed() { return digitalRead(buttons[color]) == HIGH; }
-
-        void draw_px(unsigned int color) {
+        void draw_px() {
             uint16_t index = this->loc->get_index();
-            leds[index] += color;
+            (*leds)[index] += this->color;
             FastLED.show();
-            // if (d) delay(50);
+            delay(10);
         }
 
-        void draw(unsigned int color) {
-            if(pushed) {
-                int old_index = this->loc->get_index();
-                written[old_index] = 1;
-                this->draw_px(color);
+        bool pushed() { return digitalRead(this->pin) == HIGH; }
 
-                while(written[old_index]) { // maybe err
-                    this->loc->get_next_location();
-                    int new_index = this->loc->get_index();
-                }
+        void draw_line() {
+            written[this->loc->get_index()] = true;
+            draw_px();
+            while(written[this->loc->get_index()]) {
+                this->loc->get_next_location();
             }
         }
 
