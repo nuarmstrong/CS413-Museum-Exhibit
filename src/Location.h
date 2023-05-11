@@ -3,6 +3,14 @@
 
 #define COORD_MAX 15
 #define COORD_MIN 0
+#define CORNER_UL 0
+#define CORNER_UR 1
+#define CORNER_BL 2
+#define CORNER_BR 3
+#define EDGE_U 4
+#define EDGE_B 5
+#define EDGE_L 6
+#define EDGE_R 7
 
 #include <Arduino.h>
 
@@ -19,81 +27,122 @@ class Location {
 
     ~Location() { }
 
+
+    void pick_edge(int which) {
+
+      int rand = random(4, 8);
+      int up_down = random(0, 2);
+
+      switch (rand)
+      {
+      case EDGE_U:
+        if (up_down) pick_corner(CORNER_UL);
+        else pick_corner(CORNER_UR);
+        break;
+
+      case EDGE_B:
+        if (up_down) pick_corner(CORNER_BL);
+        else pick_corner(CORNER_BR);
+        break;
+
+      case EDGE_L:
+        if (up_down) pick_corner(CORNER_UL);
+        else pick_corner(CORNER_BL);
+        break;
+      
+      default:
+        if (up_down) pick_corner(CORNER_UR);
+        else pick_corner(CORNER_BR);
+        break;
+      }
+      
+    }
+
+    void pick_corner(int which) {
+      int rand = random(0, 3);
+        switch (which) {
+        case CORNER_UL:
+          if (rand == 0) this->x++;
+          else if (rand == 1) this->y++;
+          else {
+            this->x++;
+            this->y++;
+          }
+          break;
+
+        case CORNER_UR:
+          if (rand == 0) this->x--; 
+          else if (rand == 1) this->y++;
+          else {
+            this->x--;
+            this->y++;
+          }
+          break;
+
+        case CORNER_BL:
+          if (rand == 0) this->x++;
+          else if (rand == 1) this->y--;
+          else {
+            this->x++;
+            this->y--;
+          }
+          break;
+        
+        default:
+          if (rand == 0) this->x--;
+          else if (rand == 1) this->y--;
+          else {
+            this->x--;
+            this->y--;
+          } 
+          break;
+        }
+
+    }
+
     void get_next_location() {
-    static const int rand1[] = {1, 4, 6};
-    static const int rand2[] = {2, 4, 5};
-    static const int rand3[] = {1, 3, 7};
-    static const int rand4[] = {1, 2, 3, 7, 8};
-    static const int rand5[] = {1, 2, 4, 5, 6};
-    static const int rand6[] = {2, 3, 4, 5, 8};
-    static const int rand7[] = {1, 3, 4, 6, 7};
-    static const int rand8[] = {1, 2, 3, 4, 5, 6, 7, 8};
+      if ((this->x == COORD_MAX) && (this->y == COORD_MAX)) pick_corner(CORNER_BR);
+      else if ((this->x == COORD_MIN) && (this->y == COORD_MIN)) pick_corner(CORNER_UL);
 
-    const int *rand;
-    int size;
-
-    if ((this->x == COORD_MAX) && (this->y == COORD_MAX)) {
-        rand = rand1;
-        size = 3;
-    } else if ((this->x == COORD_MIN) && (this->y == COORD_MIN)) {
-        rand = rand2;
-        size = 3;
-    } else if ((this->x == COORD_MIN) && (this->y == COORD_MAX)) {
-        rand = rand3;
-        size = 3;
-    } else if ((this->x == COORD_MAX) && (this->y == COORD_MIN)) {
-        rand = rand2;
-        size = 3;
-    } else if (this->x == COORD_MIN) {
-        rand = rand4;
-        size = 5;
-    } else if (this->x == COORD_MAX) {
-        rand = rand5;
-        size = 5;
-    } else if (this->y == COORD_MIN) {
-        rand = rand6;
-        size = 5;
-    } else if (this->y == COORD_MAX) {
-        rand = rand7;
-        size = 5;
-    } else {
-        rand = rand8;
-        size = 8;
+      else if ((this->x == COORD_MIN) && (this->y == COORD_MAX)) pick_corner(CORNER_BL);
+      else if ((this->x == COORD_MAX) && (this->y == COORD_MIN)) pick_corner(CORNER_UR);
+      else if (this->x == COORD_MIN) pick_edge(EDGE_L);
+      else if (this->x == COORD_MAX) pick_edge(EDGE_R);
+      else if (this->y == COORD_MIN) pick_edge(EDGE_U);
+      else if (this->y == COORD_MAX) pick_edge(EDGE_B);
+      else {
+          switch (random(0, 9)) {
+            case 1: // x, y-
+                this->y--;
+                break;
+            case 2: // x, y+
+                this->y++;
+                break;
+            case 3: // x+, y0
+                this->x++;
+                break;
+            case 4: // x-, y0
+                this->x--;
+                break;
+            case 5: // x-, y+
+                this->x--;
+                this->y++;
+                break;
+            case 6: // x-, y-
+                this->x--;
+                this->y--;
+                break;
+            case 7: // x+, y-
+                this->x++;
+                this->y--;
+                break;
+            default: // x+, y+
+                this->x++;
+                this->y++;
+                break;
+          }
+      }
     }
-
-    int pick = rand[random(size)];
-
-    switch (pick) {
-        case 1: // x, y-
-            this->y--;
-            break;
-        case 2: // x, y+
-            this->y++;
-            break;
-        case 3: // x+, y0
-            this->x++;
-            break;
-        case 4: // x-, y0
-            this->x--;
-            break;
-        case 5: // x-, y+
-            this->x--;
-            this->y++;
-            break;
-        case 6: // x-, y-
-            this->x--;
-            this->y--;
-            break;
-        case 7: // x+, y-
-            this->x++;
-            this->y--;
-            break;
-        default: // x+, y+
-            this->x++;
-            this->y++;
-            break;
-    }
-}
 
 
     uint16_t get_index() {

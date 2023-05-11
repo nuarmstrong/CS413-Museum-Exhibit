@@ -32,11 +32,11 @@ bool writtenPurple[256];
 
 // TODO: init in Note constructor, change to 
 // random start coord
-Location* red = new Location(3, 3);
+Location* red = new Location(0,0);
 Location* orange = new Location(12, 3);
 Location* yellow = new Location(3, 7);
-Location* green = new Location(12, 13);
-Location* blue = new Location(7, 13);
+Location* green = new Location(0, 7);
+Location* blue = new Location(7, 0);
 Location* purple = new Location(3, 13);
 
 
