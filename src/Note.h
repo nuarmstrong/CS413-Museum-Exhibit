@@ -29,7 +29,7 @@ class Note {
         Note(button pin_num, CRGB color, CRGB (*leds)[256])
         : pin(pin_num), color(color), leds(leds) 
         {
-            this->loc = new Location(random(COORD_MIN), random(COORD_MAX));
+            this->loc = new Location(random() % 16, random() % 16);
             pinMode(pin_num, INPUT);
         }
 
@@ -39,7 +39,7 @@ class Note {
             uint16_t index = this->loc->get_index();
             (*leds)[index] += this->color;
             FastLED.show();
-            delay(10);
+            delay(50);
         }
 
         bool pushed() { return digitalRead(this->pin) == HIGH; }
