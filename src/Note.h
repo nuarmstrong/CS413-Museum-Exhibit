@@ -18,7 +18,6 @@ enum button {
 class Note {
     private:
         Location* loc;
-        // const char path;
         uint8_t pin;
         bool written[256] = {false};
         CRGB color;
