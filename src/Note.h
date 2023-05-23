@@ -18,21 +18,21 @@ enum button {
 class Note {
     private:
         Location* loc;
-        uint8_t pin;
         bool written[256] = {false};
         CRGB color;
         CRGB (*leds)[256];  // pointer to an array of 256 CRGB
 
     public:
 
-        Note(button pin_num, CRGB color, CRGB (*leds)[256])
-        : pin(pin_num), color(color), leds(leds) 
+        Note(CRGB color, CRGB (*leds)[256])
+        : color(color), leds(leds) 
         {
-            this->loc = new Location(random() % 16, random() % 16);
-            pinMode(pin_num, INPUT);
+            this->loc = new Location();
         }
 
-        ~Note() { };
+        ~Note() {
+            delete this->loc;
+         };
 
         void draw_px() {
             uint16_t index = this->loc->get_index();
@@ -41,8 +41,6 @@ class Note {
             delay(50);
         }
 
-        bool pushed() { return digitalRead(this->pin) == HIGH; }
-
         void draw_line() {
             written[this->loc->get_index()] = true;
             draw_px();
@@ -50,7 +48,6 @@ class Note {
                 this->loc->get_next_location();
             }
         }
-
     
 };
 #endif // NOTE_H
