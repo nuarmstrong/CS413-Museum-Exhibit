@@ -22,16 +22,16 @@ This Arduino application is designed to control a 16x16 LED matrix (WS2812B) usi
 ## Dependencies
 
 This project uses the following dependencies:
-* **FastLED** - A powerful and efficient library for controlling a broad range of addressable RGB LEDs, by Daniel Garcia.
+* [**FastLED**](https://github.com/FastLED/FastLED) - A powerful and efficient library for controlling a broad range of addressable RGB LEDs, by Daniel Garcia.
 * **Arduino.h** - The standard Arduino library.
 
 ## Code Structure and Description
 
-### Main.cpp
+### [Main.cpp](./src/main.cpp)
 
 `main.cpp` is the main program file where the setup and main loop function is present. The file includes the header files `Arduino.h`, `FastLED.h`, `Location.h`, and `Note.h`. It also defines the data pin for LED control and the maximum brightness of the LEDs. The program creates six `Note` objects, one for each button color. It checks if any button has been pressed in the main loop and if so, triggers the respective `Note` object's `draw_line` function.
 
-### Note.h
+### [Note.h](./include/Note.h)
 
 `Note.h` is a header file that defines the `Note` class. A `Note` object represents a button and the actions to be performed when it's pressed. 
 
@@ -49,11 +49,11 @@ And the following member functions:
 * `pushed()`: Checks if the button associated with the `Note` object has been pressed.
 * `draw_line()`: Draws a "line" of light by lighting up pixels in a random direction until it reaches an unlit pixel.
 
-### BitSet.h
+### [BitSet.h](./include/BitSet.h)
 
 `BitSet.h` defines the BitSet class which can store and operate on a set of 256 boolean values using four 64-bit integers.
 
-### Location.h
+### [Location.h](./include/Location.h)
 
 `Location.h` defines the `Location` class, which stores the current position (x, y) of the light "line" in the LED matrix and provides methods to update and retrieve the location.
 
