@@ -13,87 +13,32 @@ class Location {
 
   public:
 
-    Location() : Location(random() % 16, random() % 16) { }
+    Location() : Location(random(16), random(16)) { }
 
     Location(uint8_t x, uint8_t y) : x(x), y(y) { }
 
     ~Location() { }
 
+
     void get_next_location() {
-    static const int rand1[] = {1, 4, 6};
-    static const int rand2[] = {2, 4, 5};
-    static const int rand3[] = {1, 3, 7};
-    static const int rand4[] = {1, 2, 3, 7, 8};
-    static const int rand5[] = {1, 2, 4, 5, 6};
-    static const int rand6[] = {2, 3, 4, 5, 8};
-    static const int rand7[] = {1, 3, 4, 6, 7};
-    static const int rand8[] = {1, 2, 3, 4, 5, 6, 7, 8};
+        int dx = random(3) - 1; // -1, 0, or 1
+        int dy = random(3) - 1; // -1, 0, or 1
 
-    const int *rand;
-    int size;
+        // Ensure that the move changes at least one coordinate.
+        while(dx == 0 && dy == 0){
+            dx = random(3) - 1;
+            dy = random(3) - 1;
+        }
 
-    if ((this->x == COORD_MAX) && (this->y == COORD_MAX)) {
-        rand = rand1;
-        size = 3;
-    } else if ((this->x == COORD_MIN) && (this->y == COORD_MIN)) {
-        rand = rand2;
-        size = 3;
-    } else if ((this->x == COORD_MIN) && (this->y == COORD_MAX)) {
-        rand = rand3;
-        size = 3;
-    } else if ((this->x == COORD_MAX) && (this->y == COORD_MIN)) {
-        rand = rand2;
-        size = 3;
-    } else if (this->x == COORD_MIN) {
-        rand = rand4;
-        size = 5;
-    } else if (this->x == COORD_MAX) {
-        rand = rand5;
-        size = 5;
-    } else if (this->y == COORD_MIN) {
-        rand = rand6;
-        size = 5;
-    } else if (this->y == COORD_MAX) {
-        rand = rand7;
-        size = 5;
-    } else {
-        rand = rand8;
-        size = 8;
+        // Check boundaries and adjust coordinates
+        if(x + dx >= 0 && x + dx < 16){
+            x += dx;
+        }
+
+        if(y + dy >= 0 && y + dy < 16){
+            y += dy;
+        }
     }
-
-    int pick = rand[random(size)];
-
-    switch (pick) {
-        case 1: // x, y-
-            this->y--;
-            break;
-        case 2: // x, y+
-            this->y++;
-            break;
-        case 3: // x+, y0
-            this->x++;
-            break;
-        case 4: // x-, y0
-            this->x--;
-            break;
-        case 5: // x-, y+
-            this->x--;
-            this->y++;
-            break;
-        case 6: // x-, y-
-            this->x--;
-            this->y--;
-            break;
-        case 7: // x+, y-
-            this->x++;
-            this->y--;
-            break;
-        default: // x+, y+
-            this->x++;
-            this->y++;
-            break;
-    }
-}
 
 
     uint16_t get_index() {
