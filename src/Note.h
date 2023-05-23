@@ -3,37 +3,28 @@
 
 #include <FastLED.h>
 #include "Location.h"
+#include "Bitset.h"
 
 #define NUM_LEDS 256
-
-enum button {
-  buttonRed = 12,
-  buttonOrange = 11,
-  buttonYellow = 10,
-  buttonGreen = 6,
-  buttonBlue = 5,
-  buttonPurple = 4,
-};
 
 class Note {
     private:
         Location* loc;
-        // const char path;
-        uint8_t pin;
-        bool written[256] = {false};
+        BitSet written;
         CRGB color;
         CRGB (*leds)[256];  // pointer to an array of 256 CRGB
 
     public:
 
-        Note(button pin_num, CRGB color, CRGB (*leds)[256])
-        : pin(pin_num), color(color), leds(leds) 
+        Note(CRGB color, CRGB (*leds)[256])
+        : color(color), leds(leds) 
         {
-            this->loc = new Location(random() % 16, random() % 16);
-            pinMode(pin_num, INPUT);
+            this->loc = new Location();
         }
 
-        ~Note() { };
+        ~Note() {
+            delete this->loc;
+        };
 
         void draw_px() {
             uint16_t index = this->loc->get_index();
@@ -42,16 +33,13 @@ class Note {
             delay(50);
         }
 
-        bool pushed() { return digitalRead(this->pin) == HIGH; }
-
         void draw_line() {
-            written[this->loc->get_index()] = true;
+            written.set(this->loc->get_index());
             draw_px();
-            while(written[this->loc->get_index()]) {
+            while(written.get(this->loc->get_index())) {
                 this->loc->get_next_location();
             }
         }
-
     
 };
 #endif // NOTE_H

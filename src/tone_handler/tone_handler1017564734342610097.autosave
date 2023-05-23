@@ -99,86 +99,90 @@ void noteOn(int channel, int pitch, int velocity) {
   println("Channel:"+channel);
   println("Pitch:"+pitch);
   println("Velocity:"+velocity);
-  if (velocity > 0 ) {
-    switch (pitch) {
-      case NOTE_C3:
-        //myPort.write('c');
-        writeByte(pitch);
-        break;
-      case NOTE_D3b:
-        myPort.write('a');
-        break;
-      case NOTE_D3:
-        myPort.write('b');
-        break;
-      case NOTE_E3b:
-        myPort.write('d');
-        break;
-      case NOTE_E3:
-        myPort.write('e');
-        break;
-      case NOTE_F3:
-        myPort.write('f');
-        break;
-      case NOTE_G3b:
-        myPort.write('g');
-        break;
-      case NOTE_G3:
-        myPort.write('h');
-        break;
-      case NOTE_A3b:
-        myPort.write('i');
-        break;
-      case NOTE_A3:
-        myPort.write('j');
-        break;
-       case NOTE_B3b:
-        myPort.write('k');
-        break;
-      case NOTE_B3:
-        myPort.write('l');
-        break;
-      case NOTE_C4:
-        myPort.write('m');
-        break;
-      case NOTE_D4b:
-        myPort.write('n');
-        break;
-      case NOTE_D4:
-        myPort.write('o');
-        break;
-      case NOTE_E4b:
-        myPort.write('p');
-        break;
-      case NOTE_E4:
-        myPort.write('q');
-        break;
-      case NOTE_F4:
-        myPort.write('r');
-        break;
-      case NOTE_G4b:
-        myPort.write('s');
-        break;
-      case NOTE_G4:
-        myPort.write('t');
-        break;
-      case NOTE_A4b:
-        myPort.write('u');
-        break;
-      case NOTE_A4:
-        myPort.write('v');
-        break;
-      case NOTE_B4b:
-        myPort.write('w');
-        break;
-      case NOTE_B4:
-        myPort.write('x');
-        break;
-      default:
-        myPort.write('y');
-        break;
-    }
+  
+  if (velocity > 0) {
+    writeByte(pitch);
   }
+  //if (velocity > 0 ) {
+  //  switch (pitch) {
+  //    case NOTE_C3:
+  //      //myPort.write('c');
+  //      writeByte(pitch);
+  //      break;
+  //    case NOTE_D3b:
+  //      myPort.write('a');
+  //      break;
+  //    case NOTE_D3:
+  //      myPort.write('b');
+  //      break;
+  //    case NOTE_E3b:
+  //      myPort.write('d');
+  //      break;
+  //    case NOTE_E3:
+  //      myPort.write('e');
+  //      break;
+  //    case NOTE_F3:
+  //      myPort.write('f');
+  //      break;
+  //    case NOTE_G3b:
+  //      myPort.write('g');
+  //      break;
+  //    case NOTE_G3:
+  //      myPort.write('h');
+  //      break;
+  //    case NOTE_A3b:
+  //      myPort.write('i');
+  //      break;
+  //    case NOTE_A3:
+  //      myPort.write('j');
+  //      break;
+  //     case NOTE_B3b:
+  //      myPort.write('k');
+  //      break;
+  //    case NOTE_B3:
+  //      myPort.write('l');
+  //      break;
+  //    case NOTE_C4:
+  //      myPort.write('m');
+  //      break;
+  //    case NOTE_D4b:
+  //      myPort.write('n');
+  //      break;
+  //    case NOTE_D4:
+  //      myPort.write('o');
+  //      break;
+  //    case NOTE_E4b:
+  //      myPort.write('p');
+  //      break;
+  //    case NOTE_E4:
+  //      myPort.write('q');
+  //      break;
+  //    case NOTE_F4:
+  //      myPort.write('r');
+  //      break;
+  //    case NOTE_G4b:
+  //      myPort.write('s');
+  //      break;
+  //    case NOTE_G4:
+  //      myPort.write('t');
+  //      break;
+  //    case NOTE_A4b:
+  //      myPort.write('u');
+  //      break;
+  //    case NOTE_A4:
+  //      myPort.write('v');
+  //      break;
+  //    case NOTE_B4b:
+  //      myPort.write('w');
+  //      break;
+  //    case NOTE_B4:
+  //      myPort.write('x');
+  //      break;
+  //    default:
+  //      myPort.write('y');
+  //      break;
+  //  }
+  //}
 }
 
 void noteOff(int channel, int pitch, int velocity) {
