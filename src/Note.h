@@ -3,13 +3,14 @@
 
 #include <FastLED.h>
 #include "Location.h"
+#include "Bitset.h"
 
 #define NUM_LEDS 256
 
 class Note {
     private:
         Location* loc;
-        bool written[256] = {false};
+        BitSet written;
         CRGB color;
         CRGB (*leds)[256];  // pointer to an array of 256 CRGB
 
@@ -23,7 +24,7 @@ class Note {
 
         ~Note() {
             delete this->loc;
-         };
+        };
 
         void draw_px() {
             uint16_t index = this->loc->get_index();
@@ -33,9 +34,9 @@ class Note {
         }
 
         void draw_line() {
-            written[this->loc->get_index()] = true;
+            written.set(this->loc->get_index());
             draw_px();
-            while(written[this->loc->get_index()]) {
+            while(written.get(this->loc->get_index())) {
                 this->loc->get_next_location();
             }
         }
