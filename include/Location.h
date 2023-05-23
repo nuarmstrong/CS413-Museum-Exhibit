@@ -39,7 +39,6 @@ class Location {
         }
     }
 
-
     uint16_t get_index() {
       if (this->x & 0x01) {
           uint8_t reversedY = (16 - 1) - y;
