@@ -6,15 +6,6 @@
 
 #define NUM_LEDS 256
 
-enum button {
-  buttonRed = 12,
-  buttonOrange = 11,
-  buttonYellow = 10,
-  buttonGreen = 6,
-  buttonBlue = 5,
-  buttonPurple = 4,
-};
-
 class Note {
     private:
         Location* loc;

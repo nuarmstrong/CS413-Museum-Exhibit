@@ -1,12 +1,10 @@
 #include <Arduino.h>
 #include <FastLED.h>
-// #include <LiquidCrystal.h>
 #include "Location.h"
 #include "Note.h"
 
 #define NUM_LEDS 256
 #define DATA_PIN 11
-#define PRINT_ENABLED false
 
 // const int rs = 9, en = 8, d4 = 7, d5 = 6, d6 = 5, d7 = 4;
 // LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
@@ -41,43 +39,34 @@ enum keys {
 
 CRGB leds[NUM_LEDS];
 
-Note C3 = Note(buttonRed, 0x2DEE28, &leds);
-Note D3b = Note(buttonOrange, 0x7CF42F, &leds);
-Note D3 = Note(buttonYellow, 0xE9EC4F, &leds);
-Note E3b = Note(buttonGreen, 0xC48C3F, &leds);
-Note E3 = Note(buttonBlue, 0xBE6C44, &leds);
-Note F3 = Note(buttonPurple, 0xC06B7B, &leds);
+Note C3 = Note( 0x2DEE28, &leds);
+Note D3b = Note( 0x7CF42F, &leds);
+Note D3 = Note( 0xE9EC4F, &leds);
+Note E3b = Note( 0xC48C3F, &leds);
+Note E3 = Note( 0xBE6C44, &leds);
+Note F3 = Note( 0xC06B7B, &leds);
 
-Note G3b = Note(buttonRed, 0xC967D4, &leds);
-Note G3 = Note(buttonOrange, 0x7735BE, &leds);
-Note A3b = Note(buttonYellow, 0x5626A5, &leds);
-Note A = Note(buttonGreen, 0x4F5CA2, &leds);
-Note B3b = Note(buttonBlue, 0x5AA6A4, &leds);
-Note B3 = Note(buttonPurple, 0x2FEE7E, &leds);
+Note G3b = Note(0xC967D4, &leds);
+Note G3 = Note(0x7735BE, &leds);
+Note A3b = Note(0x5626A5, &leds);
+Note A = Note(0x4F5CA2, &leds);
+Note B3b = Note(0x5AA6A4, &leds);
+Note B3 = Note(0x2FEE7E, &leds);
 
-Note C4 = Note(buttonRed, 0x2DEE28, &leds);
-Note D4b = Note(buttonRed, 0x7CF42F, &leds);
-Note D4 = Note(buttonRed, 0xE9EC4F, &leds);
-Note E4b = Note(buttonRed, 0xC48C3F, &leds);
-Note E4 = Note(buttonRed, 0xBE6C44, &leds);
-Note F4 = Note(buttonRed, 0xC06B7B, &leds);
-Note G4b = Note(buttonRed, 0xC967D4, &leds);
-Note G4 = Note(buttonRed, 0x7735BE, &leds);
-Note A4b = Note(buttonRed, 0x5626A5, &leds);
-Note AFour = Note(buttonRed, 0x4F5CA2, &leds);
-Note B4b = Note(buttonRed, 0x5AA6A4, &leds);
-Note B4 = Note(buttonRed, 0x2FEE7E, &leds);
-Note C5 = Note(buttonRed, 0x2DEE28, &leds);
+Note C4 = Note(0x2DEE28, &leds);
+Note D4b = Note(0x7CF42F, &leds);
+Note D4 = Note(0xE9EC4F, &leds);
+Note E4b = Note(0xC48C3F, &leds);
+Note E4 = Note(0xBE6C44, &leds);
+Note F4 = Note(0xC06B7B, &leds);
+Note G4b = Note(0xC967D4, &leds);
+Note G4 = Note(0x7735BE, &leds);
+Note A4b = Note(0x5626A5, &leds);
+Note AFour = Note(0x4F5CA2, &leds);
+Note B4b = Note(0x5AA6A4, &leds);
+Note B4 = Note(0x2FEE7E, &leds);
+Note C5 = Note(0x2DEE28, &leds);
 
-
-// void myprint(String s, int x = 0) {
-
-//   if (PRINT_ENABLED) {
-//     Serial.print(s);
-//     Serial.println(x);
-//   }
-
-// }
 
 void setup() { 
 
@@ -87,29 +76,8 @@ void setup() {
   FastLED.addLeds<WS2812B, DATA_PIN, RGB>(leds, NUM_LEDS);  // GRB ordering is typical
   FastLED.setBrightness(2);
   FastLED.clear();
-
-  // lcd.begin(16, 2);
-  // lcd.setCursor(0, 0);
-  // lcd.print("Hello, world!");
-  // delay(2000);
-  // lcd.clear();
-
 }
 
-bool newData = false;
-byte recv[64];
-int idx = 0;
-
-void receiveEvent() {
-  if ((Serial.available() >= 2)) {
-    recv[idx] = Serial.read();
-    recv[idx++] = Serial.read();
-    if (idx == 63) {
-      idx = 0;
-      // newData = true;
-    }
-  }
-}
 
 void loop() { 
   // lcd.clear();
