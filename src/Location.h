@@ -13,12 +13,11 @@ class Location {
 
   public:
 
-    Location() : Location(random(16), random(16)) { }
+    Location() : Location(random() % 16, random() % 16) { }
 
     Location(uint8_t x, uint8_t y) : x(x), y(y) { }
 
     ~Location() { }
-
 
     void get_next_location() {
         int dx = random(3) - 1; // -1, 0, or 1

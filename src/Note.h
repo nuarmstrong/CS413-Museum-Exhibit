@@ -12,15 +12,15 @@ enum button {
   buttonOrange = 11,
   buttonYellow = 10,
   buttonGreen = 6,
-  buttonBlue = 8,
+  buttonBlue = 5,
   buttonPurple = 4,
 };
 
 class Note {
     private:
         Location* loc;
-        BitSet written;
         uint8_t pin;
+        BitSet written;
         CRGB color;
         CRGB (*leds)[256];  // pointer to an array of 256 CRGB
 
@@ -29,15 +29,11 @@ class Note {
         Note(button pin_num, CRGB color, CRGB (*leds)[256])
         : pin(pin_num), color(color), leds(leds) 
         {
-            this->loc = new Location();
+            this->loc = new Location(random(16), random(16));
             pinMode(pin_num, INPUT);
         }
 
-        ~Note() {
-            delete this->loc;
-        };
-
-        bool pushed() { return digitalRead(this->pin) == HIGH; }
+        ~Note() { };
 
         void draw_px() {
             uint16_t index = this->loc->get_index();
@@ -46,13 +42,16 @@ class Note {
             delay(50);
         }
 
+        bool pushed() { return digitalRead(this->pin) == HIGH; }
+
         void draw_line() {
             written.set(this->loc->get_index());
             draw_px();
-            while(written.get(this->loc->get_index()) != 0) {
+            while(written.get(this->loc->get_index())) {
                 this->loc->get_next_location();
             }
         }
+
     
 };
 #endif // NOTE_H

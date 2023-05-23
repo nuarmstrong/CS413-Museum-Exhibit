@@ -16,19 +16,10 @@ Note D = Note(buttonGreen, CRGB::Green, &leds);
 Note E = Note(buttonBlue, CRGB::Blue, &leds);
 Note F = Note(buttonPurple, CRGB::Purple, &leds);
 
-// void myprint(String s, int x = 0) {
-
-//   if (PRINT_ENABLED) {
-//     Serial.print(s);
-//     Serial.println(x);
-//   }
-
-// }
-
 void setup() { 
 
   randomSeed(analogRead(0));
-  Serial.begin(9600);
+  // Serial.begin(9600);
   
   FastLED.addLeds<WS2812B, DATA_PIN, GRB>(leds, NUM_LEDS);  // GRB ordering is typical
   FastLED.setBrightness(2);
