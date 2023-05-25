@@ -63,7 +63,7 @@
 #include "Location.h"
 #include "Bitset.h"
 
-#define NUM_LEDS 256
+#define NUM_LEDS 1024
 #define MAX_LED_ON 20  // maximum number of LEDs on
 
 
@@ -107,6 +107,9 @@ class Note {
             uint16_t oldest_led = ring_buffer[ring_buffer_index];
             if(oldest_led < NUM_LEDS) {
                 (*leds)[oldest_led] -= this->color;  // turn off the oldest LED
+                (*leds)[oldest_led+256] -= this->color;
+                (*leds)[oldest_led+512] -= this->color;
+                (*leds)[oldest_led+768] -= this->color;
                 written.clear(oldest_led);  // update the BitSet
             }
 
@@ -114,6 +117,9 @@ class Note {
             ring_buffer_index = (ring_buffer_index + 1) % MAX_LED_ON;  // move the index
 
             (*leds)[index] += this->color;
+            (*leds)[index+256] += this->color;
+            (*leds)[index+512] += this->color;
+            (*leds)[index+768] += this->color;
             FastLED.show();
             delay(20);
         }
