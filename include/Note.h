@@ -11,6 +11,7 @@
 
 class Note {
     private:
+        const char label; // char signal for this note
         Location* loc; // pointer to a Location object
         BitSet written; // BitSet to keep track of which LEDs are on
         CRGB color; // color of this note
@@ -20,8 +21,8 @@ class Note {
 
     public:
 
-        Note(CRGB color, CRGB (*leds)[NUM_LEDS])
-        : color(color), leds(leds), ring_buffer_index(0)
+        Note(CRGB color, CRGB (*leds)[NUM_LEDS], const char ch)
+        : color(color), leds(leds), label(ch), ring_buffer_index(0)
         {
             loc = new Location();
             for(uint8_t i = 0; i < MAX_LED_ON; i++)
@@ -37,6 +38,7 @@ class Note {
 
             // Add to ring buffer and turn off the oldest LED if necessary
             uint16_t oldest_led = ring_buffer[ring_buffer_index];
+
             if(oldest_led < NUM_LEDS) {
                 (*leds)[oldest_led] -= color;  // emove color from the oldest LED
                 (*leds)[oldest_led + (NUM_LEDS_PER_STRIP * 2)] -= color;
@@ -64,6 +66,12 @@ class Note {
             while(written.get(loc->get_index())) { 
                 loc->get_next_location(); 
             }
+        }
+
+        // Verify if the character matches the label 
+        // when signal is received from MIDI 
+        void verify(char c) {
+          if (c == label) draw_line();
         }
 };
 #endif // NOTE_H

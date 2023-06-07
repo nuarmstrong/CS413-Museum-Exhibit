@@ -9,59 +9,28 @@
 
 class BitSet {
     private:
-        uint64_t lowest, low, high, highest;
+        // 1024 bits
+        uint64_t bits[16];
 
     public:
-        BitSet() : lowest(0), low(0), high(0), highest(0) { }
+        BitSet() {
+            for (int i = 0; i < 16; i++)
+                bits[i] = 0;
+        }
 
         ~BitSet() { }
 
         void set(uint16_t index) {
-            if (index < 64) {
-                bitSet(this->lowest, index);
-            } 
-            else if (index < 128) {
-                bitSet(this->low, index - 64);
-            }
-            else if (index < 192) {
-                bitSet(this->high, index - 128);
-            }
-            else {
-                bitSet(this->highest, index - 192);
-            }
+            bitSet(this->bits[index / 64], index % 64);
         }
 
         void clear(uint16_t index) {
-            if (index < 64) {
-                bitClear(this->lowest, index);
-            } 
-            else if (index < 128) {
-                bitClear(this->low, index - 64);
-            }
-            else if (index < 192) {
-                bitClear(this->high, index - 128);
-            }
-            else {
-                bitClear(this->highest, index - 192);
-            }
+            bitClear(this->bits[index / 64], index % 64);
         }
 
         bool get(uint16_t index) {
-            if (index < 64) {
-                return bitRead(this->lowest, index);
-            } 
-            else if (index < 128) {
-                return bitRead(this->low, index - 64);
-            }
-            else if (index < 192) {
-                return bitRead(this->high, index - 128);
-            }
-            else {
-                return bitRead(this->highest, index - 192);
-            }
+            return bitRead(this->bits[index / 64], index % 64);
         }
-
-
 };
 
 #endif // BITSET_H
